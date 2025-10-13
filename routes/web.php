@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PhieuMuonController;
 use App\Http\Controllers\PostController;
@@ -25,7 +24,6 @@ Route::middleware('auth')->group(function () {
 
     // Books Resource Routes
     Route::resource('books', BookController::class);
-    Route::resource('authors', AuthorController::class);
     Route::resource('members', MemberController::class);
     Route::resource('phieumuon', PhieuMuonController::class);
 

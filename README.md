@@ -5,7 +5,6 @@
 ## Tính năng
 
 -   **Quản lý Sách:** Thêm, xem, sửa và xóa sách trong thư viện.
--   **Quản lý Tác giả:** Quản lý thông tin tác giả.
 -   **Quản lý Thành viên:** Thêm, xem, sửa và xóa thông tin thành viên.
 -   **Quản lý Phiếu mượn:** Tạo phiếu mượn sách cho thành viên, cập nhật trạng thái trả sách và xem lịch sử mượn.
 -   **Đặt giữ sách:** Thành viên có thể đặt giữ sách.
@@ -21,9 +20,8 @@ Dự án sử dụng các bảng chính sau:
     -   `role`: 'librarian' hoặc 'member'
     -   `account_status`: 'ACTIVE', 'CLOSED', 'CANCELED', 'BLACKLISTED'
 -   `library_cards`: Thẻ thư viện cho thành viên.
--   `authors`: Lưu trữ thông tin tác giả.
 -   `racks`: Kệ sách.
--   `books`: Lưu trữ thông tin về sách (ISBN, title, subject, publication_date, author_id).
+-   `books`: Lưu trữ thông tin về sách (ISBN, title, subject, publication_date).
 -   `book_items`: Các bản sao vật lý của sách (barcode, format, status).
 -   `book_lendings`: Lưu trữ thông tin về các lần mượn sách.
 -   `book_reservations`: Lưu trữ thông tin đặt giữ sách.
@@ -103,9 +101,6 @@ Dự án sử dụng các bảng chính sau:
     -   `DELETE /books/{book}`: Xóa sách
     -   `POST /books/issue`: Mượn sách
     -   `POST /books/{bookItem}/reserve`: Đặt giữ sách
--   **Authors:**
-    -   `GET /authors`: Danh sách tác giả
-    -   Resource routes cho tác giả
 -   **Members:**
     -   `GET /members`: Danh sách thành viên
     -   Resource routes cho thành viên

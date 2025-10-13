@@ -35,29 +35,20 @@
                     <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Bìa Sách</th>
+                                <th>ISBN</th>
                                 <th>Tên Sách</th>
-                                <th>Tác Giả</th>
-                                <th>Tổng Số</th>
-                                <th>Sẵn Có</th>
+                                <th>Chủ Đề</th>
+                                <th>Ngày Xuất Bản</th>
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($books as $book)
                                 <tr>
-                                    <td>
-                                        @if($book->cover)
-                                            <img src="{{ asset('storage/' . $book->cover) }}" alt="Bìa sách" width="60" height="80"
-                                                class="img-thumbnail">
-                                        @else
-                                            <span class="text-muted">Không có ảnh</span>
-                                        @endif
-                                    </td>
+                                    <td>{{ $book->isbn }}</td>
                                     <td>{{ $book->title }}</td>
-                                    <td>{{ $book->author->name ?? 'N/A' }}</td>
-                                    <td>{{ $book->quantity }}</td>
-                                    <td>{{ $book->available ?? $book->quantity }}</td>
+                                    <td>{{ $book->subject }}</td>
+                                    <td>{{ $book->publication_date ? \Carbon\Carbon::parse($book->publication_date)->format('d/m/Y') : 'N/A' }}</td>
                                     <td>
                                         <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm me-1"
                                             title="Sửa"><i class="fas fa-edit"></i></a>
@@ -73,7 +64,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Không có sách nào trong thư viện.</td>
+                                    <td colspan="5" class="text-center">Không có sách nào trong thư viện.</td>
                                 </tr>
                             @endforelse
                         </tbody>

@@ -10,15 +10,19 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'author_id',
         'isbn',
-        'published_date',
-        'quantity',
+        'title',
+        'subject',
+        'publication_date',
     ];
 
-    public function author()
+    public function bookItems()
     {
-        return $this->belongsTo(Author::class);
+        return $this->hasMany(BookItem::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

@@ -12,7 +12,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::with('author')->get();
+        $books = Book::all();
         return view('books.index', compact('books'));
     }
 
@@ -21,8 +21,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        $authors = \App\Models\Author::all();
-        return view('books.create', compact('authors'));
+        return view('books.create');
     }
 
     /**
@@ -31,21 +30,13 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'author_id' => 'required|exists:authors,id',
             'isbn' => 'required|string|unique:books,isbn',
-            'published_date' => 'required|date',
-            'quantity' => 'required|integer|min:0',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required|string|max:255',
+            'subject' => 'nullable|string|max:255',
+            'publication_date' => 'nullable|date',
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('cover')) {
-            $data['cover'] = $request->file('cover')->store('covers', 'public');
-        }
-
-        Book::create($data);
+        Book::create($request->all());
 
         return redirect()->route('books.index')
             ->with('success', 'Sách đã được thêm thành công.');
@@ -64,8 +55,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        $authors = \App\Models\Author::all();
-        return view('books.edit', compact('book', 'authors'));
+        return view('books.edit', compact('book'));
     }
 
     /**
@@ -74,24 +64,13 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'author_id' => 'required|exists:authors,id',
             'isbn' => 'required|string|unique:books,isbn,' . $book->id,
-            'published_date' => 'required|date',
-            'quantity' => 'required|integer|min:0',
-            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title' => 'required|string|max:255',
+            'subject' => 'nullable|string|max:255',
+            'publication_date' => 'nullable|date',
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('cover')) {
-            if ($book->cover) {
-                \Storage::disk('public')->delete($book->cover);
-            }
-            $data['cover'] = $request->file('cover')->store('covers', 'public');
-        }
-
-        $book->update($data);
+        $book->update($request->all());
 
         return redirect()->route('books.index')
             ->with('success', 'Thông tin sách đã được cập nhật thành công.');

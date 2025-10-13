@@ -17,21 +17,11 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4 text-center">
-                        @if($book->cover)
-                            <img src="{{ asset('storage/' . $book->cover) }}" alt="Bìa sách" class="img-fluid rounded mb-3"
-                                style="max-height: 300px;">
-                        @else
-                            <div class="text-muted mb-3">Không có ảnh bìa</div>
-                        @endif
-                    </div>
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <h5 class="card-title">{{ $book->title }}</h5>
-                        <p class="card-text"><strong>Tác Giả:</strong> {{ $book->author->name ?? 'N/A' }}</p>
                         <p class="card-text"><strong>ISBN:</strong> {{ $book->isbn }}</p>
-                        <p class="card-text"><strong>Ngày Xuất Bản:</strong> {{ $book->published_date }}</p>
-                        <p class="card-text"><strong>Tổng Số Lượng:</strong> {{ $book->quantity }}</p>
-                        <p class="card-text"><strong>Số Lượng Sẵn Có:</strong> {{ $book->available ?? $book->quantity }}</p>
+                        <p class="card-text"><strong>Chủ Đề:</strong> {{ $book->subject }}</p>
+                        <p class="card-text"><strong>Ngày Xuất Bản:</strong> {{ $book->publication_date ? \Carbon\Carbon::parse($book->publication_date)->format('d/m/Y') : 'N/A' }}</p>
                         
                         <div class="mt-4">
                             <a href="{{ route('posts.create', ['book_id' => $book->id]) }}" class="btn btn-primary">
