@@ -22,6 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'phone',
+        'address_id',
+        'account_status',
     ];
 
     /**
@@ -59,5 +62,57 @@ class User extends Authenticatable
     public function lendings()
     {
         return $this->hasMany(BookLending::class, 'member_id');
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(BookReservation::class, 'member_id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function libraryCard()
+    {
+        return $this->hasOne(LibraryCard::class, 'user_id');
+    }
+
+    public function canCheckoutBook()
+    {
+        $currentLendings = $this->lendings()->whereNull('return_date')->count();
+        return $currentLendings < 10;
+    }
+
+    public function getCurrentLendings()
+    {
+        return $this->lendings()
+            ->whereNull('return_date')
+            ->with(['bookItem.book.author', 'bookItem.rack'])
+            ->orderBy('due_date', 'asc')
+            ->get();
+    }
+
+    public function getLendingHistory()
+    {
+        return $this->lendings()
+            ->with(['bookItem.book.author'])
+            ->orderBy('borrowed_date', 'desc')
+            ->get();
+    }
+
+    public function getActiveReservations()
+    {
+        return $this->reservations()
+            ->whereIn('status', ['WAITING', 'PROCESSING'])
+            ->with(['bookItem.book.author'])
+            ->orderBy('reservation_date', 'desc')
+            ->get();
     }
 }

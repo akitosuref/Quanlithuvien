@@ -86,4 +86,34 @@ class MemberController extends Controller
         return redirect()->route('members.index')
             ->with('success', 'Thành viên đã được xóa thành công.');
     }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        
+        if (!$user || !$user->isMember()) {
+            return redirect()->route('dashboard')->with('error', 'Chỉ thành viên mới có thể truy cập trang này.');
+        }
+
+        $currentLendings = $user->getCurrentLendings();
+        $activeReservations = $user->getActiveReservations();
+        $libraryCard = $user->libraryCard;
+        $address = $user->address;
+
+        return view('members.profile', compact('user', 'currentLendings', 'activeReservations', 'libraryCard', 'address'));
+    }
+
+    public function lendingHistory()
+    {
+        $user = auth()->user();
+        
+        if (!$user || !$user->isMember()) {
+            return redirect()->route('dashboard')->with('error', 'Chỉ thành viên mới có thể truy cập trang này.');
+        }
+
+        $lendingHistory = $user->getLendingHistory();
+        $reservations = $user->reservations()->with(['bookItem.book.author'])->orderBy('reservation_date', 'desc')->get();
+
+        return view('members.lending-history', compact('user', 'lendingHistory', 'reservations'));
+    }
 }

@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     // Chức năng Thành viên (Member)
     Route::post('/books/{bookItem}/reserve', [LibraryController::class, 'reserveBook'])->name('member.reserve');
     Route::post('/lendings/{lending}/renew', [LibraryController::class, 'renewBook'])->name('member.renew');
+    Route::get('/member/profile', [MemberController::class, 'profile'])->name('member.profile');
+    Route::get('/member/lending-history', [MemberController::class, 'lendingHistory'])->name('member.lending-history');
 
     // Chức năng Thủ thư (Librarian) - Nghiệp vụ
     Route::post('/books/issue', [LibraryController::class, 'issueBook'])->name('librarian.issue');
