@@ -43,14 +43,6 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // Author
-        Schema::create('authors', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
-
         // Rack (R2)
         Schema::create('racks', function (Blueprint $table) {
             $table->id();
@@ -66,7 +58,6 @@ return new class extends Migration {
             $table->string('title');
             $table->string('subject');
             $table->date('publication_date');
-            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -122,7 +113,6 @@ return new class extends Migration {
         Schema::dropIfExists('book_lendings');
         Schema::dropIfExists('book_items');
         Schema::dropIfExists('books');
-        Schema::dropIfExists('authors');
         Schema::dropIfExists('racks');
         Schema::dropIfExists('library_cards');
         Schema::dropIfExists('users');

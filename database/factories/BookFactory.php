@@ -15,7 +15,6 @@ class BookFactory extends Factory
             'title' => $this->faker->sentence(3),
             'subject' => $this->faker->word,
             'publication_date' => $this->faker->date(),
-            'author_id' => \App\Models\Author::factory(),
         ];
     }
 }
