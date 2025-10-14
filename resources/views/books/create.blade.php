@@ -16,7 +16,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Biểu Mẫu Thêm Sách</h6>
         </div>
         <div class="card-body">
-            <form action="{{ route('books.store') }}" method="POST">
+            <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="isbn" class="form-label">ISBN</label>
@@ -49,6 +49,14 @@
                     @error('publication_date')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="cover_image" class="form-label">Ảnh Bìa</label>
+                    <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image" accept="image/*">
+                    @error('cover_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="form-text text-muted">Chấp nhận file: JPG, PNG, GIF (Tối đa 2MB)</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Lưu Sách</button>
             </form>

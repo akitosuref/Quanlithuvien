@@ -17,7 +17,20 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-4 text-center">
+                        @if($book->cover_image)
+                            <img src="{{ asset($book->cover_image) }}" 
+                                 alt="{{ $book->title }}" 
+                                 class="img-fluid rounded shadow-sm mb-3" 
+                                 style="max-width: 100%; height: auto;">
+                        @else
+                            <div class="alert alert-secondary">
+                                <i class="fas fa-book fa-5x mb-3"></i>
+                                <p>Chưa có ảnh bìa</p>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-8">
                         <h5 class="card-title">{{ $book->title }}</h5>
                         <p class="card-text"><strong>ISBN:</strong> {{ $book->isbn }}</p>
                         <p class="card-text"><strong>Chủ Đề:</strong> {{ $book->subject }}</p>

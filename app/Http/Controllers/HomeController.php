@@ -28,6 +28,7 @@ class HomeController extends Controller
         }
 
         $bookCount = \App\Models\Book::count();
-        return view('home', compact('bookCount'));
+        $recentBooks = \App\Models\Book::latest()->take(8)->get();
+        return view('home', compact('bookCount', 'recentBooks'));
     }
 }

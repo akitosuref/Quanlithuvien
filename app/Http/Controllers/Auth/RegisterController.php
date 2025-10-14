@@ -52,6 +52,15 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'name.required' => 'Vui lòng nhập họ và tên',
+            'name.max' => 'Họ và tên không được vượt quá 255 ký tự',
+            'email.required' => 'Vui lòng nhập email',
+            'email.email' => 'Email không đúng định dạng',
+            'email.unique' => 'Email này đã được sử dụng',
+            'password.required' => 'Vui lòng nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp',
         ]);
     }
 
@@ -63,11 +72,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 'member',
+            'account_status' => 'ACTIVE',
         ]);
+
+        $user->libraryCard()->create([
+            'card_number' => 'LC' . str_pad($user->id, 8, '0', STR_PAD_LEFT),
+            'issued_at' => now(),
+            'is_active' => true,
+        ]);
+
+        return $user;
     }
 }

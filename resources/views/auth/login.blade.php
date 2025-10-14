@@ -81,61 +81,86 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .toggle-password {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 14px 45px 14px 45px;
+            border: 2px solid #e8e8f0;
+            border-radius: 12px;
             font-size: 0.95rem;
             transition: all 0.3s ease;
+            background: #f8f9fd;
         }
 
         .form-control:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .form-check {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-check input {
-            margin-right: 8px;
-            width: 16px;
-            height: 16px;
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #667eea;
         }
 
         .form-check label {
             font-size: 0.9rem;
             color: #666;
+            cursor: pointer;
+            user-select: none;
         }
 
         .btn-login {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
         .btn-login:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .divider {
@@ -267,7 +292,7 @@
                 <div class="form-group">
                     <label for="password">Mật khẩu</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-eye toggle-password" id="togglePassword"></i>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
                                name="password" required autocomplete="current-password" 
                                placeholder="Nhập mật khẩu">
@@ -306,6 +331,19 @@
             @endif
         </div>
     </div>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 
 </html>

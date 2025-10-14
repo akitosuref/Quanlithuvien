@@ -14,6 +14,7 @@ class Book extends Model
         'title',
         'subject',
         'publication_date',
+        'cover_image',
     ];
 
     public function bookItems()

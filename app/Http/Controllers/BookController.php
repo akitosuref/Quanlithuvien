@@ -34,9 +34,19 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'subject' => 'nullable|string|max:255',
             'publication_date' => 'nullable|date',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Book::create($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('cover_image')) {
+            $image = $request->file('cover_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/books'), $imageName);
+            $data['cover_image'] = 'images/books/' . $imageName;
+        }
+
+        Book::create($data);
 
         return redirect()->route('books.index')
             ->with('success', 'Sách đã được thêm thành công.');
@@ -68,9 +78,23 @@ class BookController extends Controller
             'title' => 'required|string|max:255',
             'subject' => 'nullable|string|max:255',
             'publication_date' => 'nullable|date',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $book->update($request->all());
+        $data = $request->all();
+
+        if ($request->hasFile('cover_image')) {
+            if ($book->cover_image && file_exists(public_path($book->cover_image))) {
+                unlink(public_path($book->cover_image));
+            }
+
+            $image = $request->file('cover_image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images/books'), $imageName);
+            $data['cover_image'] = 'images/books/' . $imageName;
+        }
+
+        $book->update($data);
 
         return redirect()->route('books.index')
             ->with('success', 'Thông tin sách đã được cập nhật thành công.');
@@ -81,6 +105,10 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        if ($book->cover_image && file_exists(public_path($book->cover_image))) {
+            unlink(public_path($book->cover_image));
+        }
+
         $book->delete();
 
         return redirect()->route('books.index')

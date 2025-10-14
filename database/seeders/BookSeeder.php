@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Book;
-use App\Models\Author;
 
 class BookSeeder extends Seeder
 {
@@ -13,110 +12,69 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        $authors = [
-            'Paulo Coelho',
-            'Dale Carnegie',
-            'Baird T. Spalding',
-            'Tô Hoài',
-            'Rosie Nguyễn',
-            'Mario Puzo',
-            'Hector Malot',
-            'Kuroyanagi Tetsuko',
-            'Nguyên Phong',
-            'J.K. Rowling',
-        ];
-
-        $authorIds = [];
-        foreach ($authors as $name) {
-            $author = Author::firstOrCreate(['name' => $name]);
-            $authorIds[$name] = $author->id;
-        }
-
         $books = [
             [
-                'title' => 'Nhà Giả Kim',
-                'author_id' => $authorIds['Paulo Coelho'],
-                'isbn' => '9786049680024',
-                'published_date' => '2018-03-26',
-                'quantity' => 10,
-                'available' => 10,
+                'title' => 'Charlotte và Wilbur',
+                'isbn' => '9786041234567',
+                'subject' => 'Văn học thiếu nhi',
+                'publication_date' => '2018-01-15',
+                'cover_image' => 'images/books/charlotte-va-wilbur-1.jpg',
             ],
             [
-                'title' => 'Đắc Nhân Tâm',
-                'author_id' => $authorIds['Dale Carnegie'],
-                'isbn' => '8935244801084',
-                'published_date' => '2017-01-01',
-                'quantity' => 15,
-                'available' => 15,
+                'title' => 'Danh Tướng Việt Nam',
+                'isbn' => '9786041234568',
+                'subject' => 'Lịch sử',
+                'publication_date' => '2019-05-20',
+                'cover_image' => 'images/books/danh-tuong-viet-nam-1.jpg',
             ],
             [
-                'title' => 'Hành Trình Về Phương Đông',
-                'author_id' => $authorIds['Baird T. Spalding'],
-                'isbn' => '8935086829913',
-                'published_date' => '2016-01-01',
-                'quantity' => 5,
-                'available' => 5,
+                'title' => 'Mãi Mãi Cho Tôi Nếu Em Có Thể',
+                'isbn' => '9786041234569',
+                'subject' => 'Văn học hiện đại',
+                'publication_date' => '2020-03-10',
+                'cover_image' => 'images/books/mai-moi-cho-toi-neu-em-co-the-1.jpg',
             ],
             [
-                'title' => 'Dế Mèn Phiêu Lưu Ký',
-                'author_id' => $authorIds['Tô Hoài'],
-                'isbn' => '9786042091232',
-                'published_date' => '2015-05-10',
-                'quantity' => 8,
-                'available' => 8,
+                'title' => 'Mẹ Lưu Manh Con Thiên Tài',
+                'isbn' => '9786041234570',
+                'subject' => 'Nuôi dạy con',
+                'publication_date' => '2021-08-05',
+                'cover_image' => 'images/books/me-luu-manh-conthien-tai-1.jpg',
             ],
             [
-                'title' => 'Tuổi Trẻ Đáng Giá Bao Nhiêu',
-                'author_id' => $authorIds['Rosie Nguyễn'],
-                'isbn' => '9786047739215',
-                'published_date' => '2016-08-15',
-                'quantity' => 12,
-                'available' => 12,
+                'title' => 'Quỷ Bí Chỉ Chú',
+                'isbn' => '9786041234571',
+                'subject' => 'Truyện trinh thám',
+                'publication_date' => '2019-11-12',
+                'cover_image' => 'images/books/quy-bi-chi-chu-1.jpg',
             ],
             [
-                'title' => 'Bố Già',
-                'author_id' => $authorIds['Mario Puzo'],
-                'isbn' => '9786049690262',
-                'published_date' => '2019-09-20',
-                'quantity' => 7,
-                'available' => 7,
+                'title' => 'Tiền Đẻ Ra Tiền',
+                'isbn' => '9786041234572',
+                'subject' => 'Tài chính - Đầu tư',
+                'publication_date' => '2020-06-18',
+                'cover_image' => 'images/books/tien-de-ra-tien.jpg',
             ],
             [
-                'title' => 'Không Gia Đình',
-                'author_id' => $authorIds['Hector Malot'],
-                'isbn' => '9786042091233',
-                'published_date' => '2014-02-12',
-                'quantity' => 6,
-                'available' => 6,
-            ],
-            [
-                'title' => 'Totto-chan Bên Cửa Sổ',
-                'author_id' => $authorIds['Kuroyanagi Tetsuko'],
-                'isbn' => '9786042091234',
-                'published_date' => '2013-11-30',
-                'quantity' => 9,
-                'available' => 9,
-            ],
-            [
-                'title' => 'Muôn Kiếp Nhân Sinh',
-                'author_id' => $authorIds['Nguyên Phong'],
-                'isbn' => '9786049690263',
-                'published_date' => '2020-06-01',
-                'quantity' => 11,
-                'available' => 11,
-            ],
-            [
-                'title' => 'Harry Potter và Hòn Đá Phù Thủy',
-                'author_id' => $authorIds['J.K. Rowling'],
-                'isbn' => '9786042091235',
-                'published_date' => '2003-07-21',
-                'quantity' => 20,
-                'available' => 20,
+                'title' => 'Tinh Thần Biển',
+                'isbn' => '9786041234573',
+                'subject' => 'Văn học',
+                'publication_date' => '2018-09-25',
+                'cover_image' => 'images/books/tinh-than-bien-1.jpg',
             ],
         ];
 
-        foreach ($books as $book) {
-            Book::create($book);
+        foreach ($books as $bookData) {
+            $book = Book::create($bookData);
+            
+            for ($i = 1; $i <= 5; $i++) {
+                $book->bookItems()->create([
+                    'barcode' => 'BC' . str_pad($book->id, 5, '0', STR_PAD_LEFT) . '-' . $i,
+                    'format' => 'HARDCOVER',
+                    'status' => 'AVAILABLE',
+                    'rack_id' => rand(1, 10),
+                ]);
+            }
         }
     }
 }

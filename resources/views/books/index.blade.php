@@ -35,6 +35,7 @@
                     <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th style="width: 100px;">Ảnh Bìa</th>
                                 <th>ISBN</th>
                                 <th>Tên Sách</th>
                                 <th>Chủ Đề</th>
@@ -45,11 +46,23 @@
                         <tbody>
                             @forelse ($books as $book)
                                 <tr>
+                                    <td>
+                                        @if($book->cover_image)
+                                            <img src="{{ asset($book->cover_image) }}" 
+                                                 alt="{{ $book->title }}" 
+                                                 class="img-thumbnail" 
+                                                 style="max-width: 80px; height: auto;">
+                                        @else
+                                            <span class="text-muted">Không có ảnh</span>
+                                        @endif
+                                    </td>
                                     <td>{{ $book->isbn }}</td>
                                     <td>{{ $book->title }}</td>
                                     <td>{{ $book->subject }}</td>
                                     <td>{{ $book->publication_date ? \Carbon\Carbon::parse($book->publication_date)->format('d/m/Y') : 'N/A' }}</td>
                                     <td>
+                                        <a href="{{ route('books.show', $book->id) }}" class="btn btn-info btn-sm me-1"
+                                            title="Xem"><i class="fas fa-eye"></i></a>
                                         <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning btn-sm me-1"
                                             title="Sửa"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('books.destroy', $book->id) }}" method="POST"
@@ -64,7 +77,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">Không có sách nào trong thư viện.</td>
+                                    <td colspan="6" class="text-center">Không có sách nào trong thư viện.</td>
                                 </tr>
                             @endforelse
                         </tbody>

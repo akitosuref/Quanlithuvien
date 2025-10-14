@@ -91,5 +91,40 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Sách Mới Nhất</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach($recentBooks as $book)
+                                <div class="col-md-3 mb-3">
+                                    <div class="card h-100">
+                                        @if($book->cover_image)
+                                            <img src="{{ asset($book->cover_image) }}" 
+                                                 class="card-img-top" 
+                                                 alt="{{ $book->title }}"
+                                                 style="height: 250px; object-fit: cover;">
+                                        @else
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 250px;">
+                                                <i class="fas fa-book fa-3x text-muted"></i>
+                                            </div>
+                                        @endif
+                                        <div class="card-body">
+                                            <h6 class="card-title">{{ $book->title }}</h6>
+                                            <p class="card-text text-muted small">{{ $book->subject }}</p>
+                                            <a href="{{ route('books.show', $book->id) }}" class="btn btn-sm btn-primary">Xem chi tiết</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

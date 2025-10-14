@@ -93,45 +93,66 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .toggle-password {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            z-index: 10;
+        }
+
+        .toggle-password:hover {
+            color: #667eea;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 14px 45px 14px 45px;
+            border: 2px solid #e8e8f0;
+            border-radius: 12px;
             font-size: 0.95rem;
             transition: all 0.3s ease;
+            background: #f8f9fd;
         }
 
         .form-control:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
         .btn-register {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
             margin-top: 10px;
         }
 
         .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
         }
 
         .btn-register:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
 
         .divider {
@@ -276,7 +297,7 @@
                 <div class="form-group">
                     <label for="password">Mật khẩu</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-eye toggle-password" id="togglePassword"></i>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
                                name="password" required autocomplete="new-password" 
                                placeholder="Tối thiểu 8 ký tự">
@@ -292,7 +313,7 @@
                 <div class="form-group">
                     <label for="password-confirm">Xác nhận mật khẩu</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-eye toggle-password" id="togglePasswordConfirm"></i>
                         <input id="password-confirm" type="password" class="form-control" 
                                name="password_confirmation" required autocomplete="new-password" 
                                placeholder="Nhập lại mật khẩu">
@@ -313,6 +334,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+        const passwordConfirmInput = document.getElementById('password-confirm');
+
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        togglePasswordConfirm.addEventListener('click', function() {
+            const type = passwordConfirmInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordConfirmInput.setAttribute('type', type);
+            
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 
 </html>

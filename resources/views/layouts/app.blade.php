@@ -36,12 +36,11 @@
                     <li>
                         <a href="{{ route('books.index') }}"><i class="fas fa-book"></i> Quản Lý Sách</a>
                     </li>
-                    <li>
-                        <a href="{{ route('authors.index') }}"><i class="fas fa-user-edit"></i> Quản Lý Tác Giả</a>
-                    </li>
+                    @if(auth()->user()->role === 'librarian')
                     <li>
                         <a href="{{ route('members.index') }}"><i class="fas fa-users"></i> Quản Lý Độc Giả</a>
                     </li>
+                    @endif
                     <li>
                         <a href="{{ route('phieumuon.index') }}"><i class="fas fa-ticket-alt"></i> Quản Lý Mượn Trả</a>
                     </li>

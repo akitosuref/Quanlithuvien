@@ -16,7 +16,7 @@
             <h6 class="m-0 font-weight-bold text-primary">Biểu Mẫu Chỉnh Sửa Sách</h6>
         </div>
         <div class="card-body">
-            <form action="{{ route('books.update', $book->id) }}" method="POST">
+            <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -51,6 +51,20 @@
                     @error('publication_date')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="cover_image" class="form-label">Ảnh Bìa</label>
+                    @if($book->cover_image)
+                        <div class="mb-2">
+                            <img src="{{ asset($book->cover_image) }}" alt="{{ $book->title }}" class="img-thumbnail" style="max-width: 200px;">
+                            <p class="text-muted small">Ảnh hiện tại: {{ $book->cover_image }}</p>
+                        </div>
+                    @endif
+                    <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image" accept="image/*">
+                    @error('cover_image')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="form-text text-muted">Chấp nhận file: JPG, PNG, GIF (Tối đa 2MB). Để trống nếu không muốn thay đổi.</small>
                 </div>
                 <button type="submit" class="btn btn-primary">Cập Nhật Sách</button>
             </form>
