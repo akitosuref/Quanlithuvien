@@ -90,11 +90,29 @@ Dự án sử dụng các bảng chính sau:
 
     Ứng dụng sẽ chạy tại địa chỉ `http://127.0.0.1:8000`.
 
+## Phân Chia Công Việc
+
+### banhgatongonngon
+-   Tìm kiếm và phân trang sách (commit: 990724b)
+-   Hệ thống ảnh bìa sách, sửa Model Member, cải thiện đăng ký và UX xác thực (commit: 6afff40)
+-   Xóa module Authors và cập nhật module Books theo schema cơ sở dữ liệu (commit: 9eb9d9e)
+
+### akitosuref
+-   Xóa tham chiếu Author từ migrations và seeders (commit: b00c586)
+-   Tạo thêm posts (commit: 2ca54e4)
+-   Merge remote và local README (commit: a613a93)
+-   Cập nhật UserSeeder roles, xóa thông báo từ dashboard, làm sạch README (commit: 8f3b84b)
+-   Cấu hình khởi tạo Laravel (commit: 5911024)
+-   First commit (commit: 4a2b2ee)
+
+### Vương Quang Quý
+-   Initial commit (commit: 0a8e5db)
+
 ## Các Tuyến đường (Routes) chính
 
 -   `GET /`: Dashboard
 -   **Books:**
-    -   `GET /books`: Danh sách sách
+    -   `GET /books`: Danh sách sách (có tìm kiếm và phân trang)
     -   `POST /books`: Tạo sách mới
     -   `GET /books/{book}`: Chi tiết sách
     -   `PUT /books/{book}`: Cập nhật sách
