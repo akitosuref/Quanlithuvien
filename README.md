@@ -71,10 +71,11 @@ Dự án sử dụng các bảng chính sau:
     **Tài khoản mẫu:**
 
     -   **Librarian (Thủ thư):**
-        -   Email: `admin@lms.com`
+        -   Email: `librarian@mail.com`
         -   Password: `password`
     -   **Member (Thành viên):**
-        -   10 tài khoản member được tạo tự động với email và password ngẫu nhiên
+        -   Email: `member@mail.com`
+        -   Password: `password`
 
 6.  **Khởi chạy dự án:**
     Bạn cần chạy cả hai lệnh sau trong hai cửa sổ terminal riêng biệt.
@@ -92,21 +93,18 @@ Dự án sử dụng các bảng chính sau:
 
 ## Phân Chia Công Việc
 
-### banhgatongonngon
+### akitosuref
+-   Cập nhật README với phân chia công việc (commit: a33d913)
 -   Tìm kiếm và phân trang sách (commit: 990724b)
 -   Hệ thống ảnh bìa sách, sửa Model Member, cải thiện đăng ký và UX xác thực (commit: 6afff40)
 -   Xóa module Authors và cập nhật module Books theo schema cơ sở dữ liệu (commit: 9eb9d9e)
-
-### akitosuref
 -   Xóa tham chiếu Author từ migrations và seeders (commit: b00c586)
 -   Tạo thêm posts (commit: 2ca54e4)
 -   Merge remote và local README (commit: a613a93)
+-   Initial commit (commit: 0a8e5db)
 -   Cập nhật UserSeeder roles, xóa thông báo từ dashboard, làm sạch README (commit: 8f3b84b)
 -   Cấu hình khởi tạo Laravel (commit: 5911024)
 -   First commit (commit: 4a2b2ee)
-
-### Vương Quang Quý
--   Initial commit (commit: 0a8e5db)
 
 ## Các Tuyến đường (Routes) chính
 
