@@ -182,9 +182,33 @@ Dự án sử dụng các bảng chính sau:
 -   **Librarian (role: 'librarian'):**
     -   Toàn quyền CRUD sách, thành viên, phiếu mượn
     -   Cấp phát sách, trả sách
-    -   Xem tất cả thông tin thành viên
+    -   Xem tất cả thông tin thành viên (bao gồm mật khẩu)
+    -   Tạo và chỉnh sửa mật khẩu thành viên
 -   **Member (role: 'member'):**
     -   Xem danh sách và chi tiết sách
     -   Đặt giữ sách, gia hạn sách
     -   Xem profile và lịch sử mượn của chính mình
     -   Tạo và tương tác với posts (comment, like, share)
+
+### ⚠️ Lưu ý về Bảo mật
+-   **Mật khẩu Plain Text:** Hệ thống hiện lưu mật khẩu dưới dạng plain text (không mã hóa) để admin có thể xem và quản lý mật khẩu thành viên. 
+-   **Chỉ dùng cho môi trường học tập/demo:** Cách lưu trữ này **KHÔNG AN TOÀN** cho môi trường production thực tế.
+-   **Backward Compatible:** Hệ thống vẫn hỗ trợ đăng nhập với mật khẩu đã hash từ trước đó.
+
+## Quản lý Thành viên
+
+### Tạo Thành viên Mới (Admin)
+-   Thông tin cá nhân: Tên, Email, Điện thoại
+-   Mật khẩu: Admin đặt mật khẩu ban đầu cho thành viên (hiển thị dạng text)
+-   Địa chỉ: Đường, Thành phố, Tỉnh/Bang, Mã bưu điện, Quốc gia (tất cả các trường riêng biệt)
+
+### Xem Thông tin Thành viên (Admin)
+-   Hiển thị đầy đủ thông tin cá nhân
+-   Hiển thị mật khẩu dạng plain text
+-   Hiển thị địa chỉ chi tiết (street, city, state, zip_code, country)
+-   Trạng thái tài khoản với badge màu sắc
+
+### Chỉnh sửa Thành viên (Admin)
+-   Cập nhật thông tin cá nhân
+-   Cập nhật địa chỉ (các trường riêng biệt)
+-   Thay đổi mật khẩu (tùy chọn - hiển thị dạng text)

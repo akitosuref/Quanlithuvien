@@ -75,16 +75,20 @@ class RegisterController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => $data['password'],
             'role' => 'member',
             'account_status' => 'ACTIVE',
         ]);
 
-        $user->libraryCard()->create([
-            'card_number' => 'LC' . str_pad($user->id, 8, '0', STR_PAD_LEFT),
-            'issued_at' => now(),
-            'is_active' => true,
-        ]);
+        try {
+            $user->libraryCard()->create([
+                'card_number' => 'LC' . str_pad($user->id, 8, '0', STR_PAD_LEFT),
+                'issued_at' => now()->format('Y-m-d'),
+                'is_active' => true,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to create library card: ' . $e->getMessage());
+        }
 
         return $user;
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\Address;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -31,12 +32,35 @@ class MemberController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:members,email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'password' => 'required|string|min:8|confirmed',
+            'street' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
         ]);
 
-        Member::create($request->all());
+        $addressId = null;
+        if ($request->filled('street') || $request->filled('city')) {
+            $address = Address::create([
+                'street' => $request->street,
+                'city' => $request->city,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'country' => $request->country,
+            ]);
+            $addressId = $address->id;
+        }
+
+        Member::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+            'address_id' => $addressId,
+        ]);
 
         return redirect()->route('members.index')
             ->with('success', 'Thành viên đã được thêm thành công.');
@@ -47,6 +71,7 @@ class MemberController extends Controller
      */
     public function show(Member $member)
     {
+        $member->load('address');
         return view('members.show', compact('member'));
     }
 
@@ -55,6 +80,7 @@ class MemberController extends Controller
      */
     public function edit(Member $member)
     {
+        $member->load('address');
         return view('members.edit', compact('member'));
     }
 
@@ -65,12 +91,46 @@ class MemberController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:members,email,' . $member->id,
+            'email' => 'required|email|unique:users,email,' . $member->id,
             'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'new_password' => 'nullable|string|min:8|confirmed',
+            'street' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'state' => 'nullable|string|max:100',
+            'zip_code' => 'nullable|string|max:20',
+            'country' => 'nullable|string|max:100',
         ]);
 
-        $member->update($request->all());
+        if ($request->filled('street') || $request->filled('city')) {
+            if ($member->address) {
+                $member->address->update([
+                    'street' => $request->street,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip_code' => $request->zip_code,
+                    'country' => $request->country,
+                ]);
+            } else {
+                $address = Address::create([
+                    'street' => $request->street,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip_code' => $request->zip_code,
+                    'country' => $request->country,
+                ]);
+                $member->address_id = $address->id;
+            }
+        }
+
+        $member->name = $request->name;
+        $member->email = $request->email;
+        $member->phone = $request->phone;
+
+        if ($request->filled('new_password')) {
+            $member->password = $request->new_password;
+        }
+
+        $member->save();
 
         return redirect()->route('members.index')
             ->with('success', 'Thông tin thành viên đã được cập nhật thành công.');

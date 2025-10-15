@@ -18,6 +18,11 @@ class Member extends Model
         'account_status',
     ];
     
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+    
     protected static function booted()
     {
         static::addGlobalScope('member', function ($query) {
