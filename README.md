@@ -1,6 +1,6 @@
 # Hệ thống Quản lý Thư viện
 
-Đây là một dự án quản lý thư viện được xây dựng bằng Laravel. Ứng dụng cho phép quản lý sách, tác giả, thành viên, phiếu mượn sách, đặt giữ sách và mạng xã hội (posts, comments, likes, shares).
+Đây là một dự án quản lý thư viện được xây dựng bằng Laravel. Ứng dụng cho phép quản lý sách, thành viên, phiếu mượn sách, đặt giữ sách và mạng xã hội (posts, comments, likes, shares).
 
 ## Tính năng
 
@@ -100,6 +100,8 @@ Dự án sử dụng các bảng chính sau:
 -   Phát triển module quản lý thành viên
 -   Phát triển module quản lý phiếu mượn sách
 -   Xây dựng tính năng mạng xã hội (Posts, Comments, Likes, Shares)
+-   Sửa lỗi critical: loại bỏ tham chiếu author không tồn tại
+-   Thêm middleware bảo vệ routes cho Librarian
 -   Quản lý repository và Git operations
 
 ### banhgatongonngon
@@ -108,37 +110,81 @@ Dự án sử dụng các bảng chính sau:
 -   Phát triển hệ thống upload và hiển thị ảnh bìa sách
 -   Cải thiện giao diện đăng ký và UX xác thực
 -   Tối ưu hóa cấu trúc database và models
+-   Loại bỏ module Authors khỏi hệ thống
 -   Hỗ trợ code review và debug
 
 ## Các Tuyến đường (Routes) chính
 
+### Routes Công khai (Public)
+-   `GET /login`: Đăng nhập
+-   `POST /login`: Xử lý đăng nhập
+-   `GET /register`: Đăng ký
+-   `POST /register`: Xử lý đăng ký
+-   `POST /logout`: Đăng xuất
+
+### Routes cho Thành viên (Member & Librarian)
 -   `GET /`: Dashboard
--   **Books:**
+-   `GET /search`: Tìm kiếm sách (theo tiêu đề, ISBN, chủ đề)
+-   **Books (Xem):**
     -   `GET /books`: Danh sách sách (có tìm kiếm và phân trang)
-    -   `POST /books`: Tạo sách mới
     -   `GET /books/{book}`: Chi tiết sách
-    -   `PUT /books/{book}`: Cập nhật sách
-    -   `DELETE /books/{book}`: Xóa sách
-    -   `POST /books/issue`: Mượn sách
-    -   `POST /books/{bookItem}/reserve`: Đặt giữ sách
--   **Members:**
+-   **Members (Xem):**
     -   `GET /members`: Danh sách thành viên
-    -   Resource routes cho thành viên
+    -   `GET /members/{member}`: Chi tiết thành viên
+-   **Thành viên:**
     -   `GET /member/profile`: Trang cá nhân
     -   `GET /member/lending-history`: Lịch sử mượn sách
--   **Phiếu mượn:**
-    -   `GET /phieumuon`: Danh sách phiếu mượn
-    -   Resource routes cho phiếu mượn
-    -   `POST /lendings/return`: Trả sách
-    -   `POST /lendings/{lending}/renew`: Gia hạn
--   **Posts:**
+    -   `POST /books/{bookItem}/reserve`: Đặt giữ sách
+    -   `POST /lendings/{lending}/renew`: Gia hạn sách
+-   **Posts (Mạng xã hội):**
     -   `GET /posts`: Danh sách bài viết
-    -   Resource routes cho bài viết
+    -   `GET /posts/create`: Tạo bài viết mới
+    -   `POST /posts`: Lưu bài viết
+    -   `GET /posts/{post}`: Chi tiết bài viết
     -   `POST /posts/{post}/comment`: Bình luận
     -   `POST /posts/{post}/like`: Like bài viết
     -   `POST /posts/{post}/share`: Chia sẻ bài viết
--   **Admin:**
-    -   `POST /admin/books`: Tạo sách (admin)
-    -   `DELETE /admin/books/{book}`: Xóa sách (admin)
-    -   `POST /admin/members/register`: Đăng ký thành viên
-    -   `POST /admin/members/{user}/cancel`: Hủy tài khoản
+
+### Routes cho Thủ thư (Librarian Only - Protected by LibrarianMiddleware)
+-   **Nghiệp vụ:**
+    -   `POST /books/issue`: Cấp phát sách (mượn sách)
+    -   `POST /lendings/return`: Trả sách
+-   **CRUD Sách:**
+    -   `GET /books/create`: Form tạo sách
+    -   `POST /books`: Tạo sách mới
+    -   `GET /books/{book}/edit`: Form sửa sách
+    -   `PUT /books/{book}`: Cập nhật sách
+    -   `DELETE /books/{book}`: Xóa sách
+-   **CRUD Thành viên:**
+    -   `GET /members/create`: Form tạo thành viên
+    -   `POST /members`: Tạo thành viên mới
+    -   `GET /members/{member}/edit`: Form sửa thành viên
+    -   `PUT /members/{member}`: Cập nhật thành viên
+    -   `DELETE /members/{member}`: Xóa thành viên
+-   **Phiếu mượn:**
+    -   `GET /phieumuon`: Danh sách phiếu mượn
+    -   Full CRUD resource routes cho phiếu mượn
+-   **Admin Operations:**
+    -   `POST /admin/books`: Tạo sách với nhiều bản sao
+    -   `DELETE /admin/books/{book}`: Xóa sách và tất cả bản sao
+    -   `POST /admin/members/register`: Đăng ký thành viên mới
+    -   `POST /admin/members/{user}/cancel`: Hủy tư cách thành viên
+
+## Bảo mật và Phân quyền
+
+### Middleware
+-   **auth**: Yêu cầu đăng nhập cho tất cả routes bên trong `Route::middleware('auth')`
+-   **librarian**: Middleware tùy chỉnh bảo vệ routes chỉ dành cho Thủ thư
+    -   Kiểm tra `auth()->user()->isLibrarian()`
+    -   Redirect về dashboard nếu không có quyền
+
+### Phân quyền
+-   **Librarian (role: 'librarian'):**
+    -   Toàn quyền CRUD sách, thành viên, phiếu mượn
+    -   Cấp phát sách, trả sách
+    -   Xem tất cả thông tin thành viên
+-   **Member (role: 'member'):**
+    -   Xem danh sách và chi tiết sách
+    -   Đặt giữ sách, gia hạn sách
+    -   Xem profile và lịch sử mượn của chính mình
+    -   Tạo và tương tác với posts (comment, like, share)
