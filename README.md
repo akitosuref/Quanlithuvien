@@ -97,9 +97,12 @@ Dự án sử dụng các bảng chính sau:
 -   Khởi tạo và cấu hình dự án Laravel
 -   Thiết kế và triển khai cơ sở dữ liệu
 -   Xây dựng hệ thống xác thực và phân quyền (Librarian/Member)
--   Phát triển module quản lý thành viên
+-   Phát triển module quản lý thành viên với hệ thống địa chỉ chi tiết
+-   Triển khai hệ thống mật khẩu plain text cho admin với backward compatibility
 -   Phát triển module quản lý phiếu mượn sách
 -   Xây dựng tính năng mạng xã hội (Posts, Comments, Likes, Shares)
+-   Thiết kế lại giao diện quản lý thành viên (create/edit/show) với layout 2 cột
+-   Tích hợp hệ thống địa chỉ (Address model) vào quản lý thành viên
 -   Sửa lỗi critical: loại bỏ tham chiếu author không tồn tại
 -   Thêm middleware bảo vệ routes cho Librarian
 -   Quản lý repository và Git operations
