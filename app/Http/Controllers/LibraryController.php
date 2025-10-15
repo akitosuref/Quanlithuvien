@@ -30,10 +30,24 @@ class LibraryController extends Controller
             return back()->with('error', 'Vui lòng nhập từ khóa tìm kiếm.');
         }
 
-        $results = Book::searchCatalog($query, $type)->with([
-            'author',
-            'items' => function ($query) {
-                $query->with('currentReservation');
+        $results = Book::query();
+
+        switch ($type) {
+            case 'isbn':
+                $results->where('isbn', 'LIKE', "%{$query}%");
+                break;
+            case 'subject':
+                $results->where('subject', 'LIKE', "%{$query}%");
+                break;
+            case 'title':
+            default:
+                $results->where('title', 'LIKE', "%{$query}%");
+                break;
+        }
+
+        $results = $results->with([
+            'bookItems' => function ($query) {
+                $query->with('rack');
             }
         ])->paginate(10);
 

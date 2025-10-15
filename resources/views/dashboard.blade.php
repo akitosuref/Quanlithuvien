@@ -59,10 +59,10 @@
                         <select name="search_type" class="form-control">
                             <option value="title" @if(isset($searchType) && $searchType == 'title') selected @endif>Theo Tiêu
                                 đề</option>
-                            <option value="author" @if(isset($searchType) && $searchType == 'author') selected @endif>Theo
-                                Tên Tác giả</option>
                             <option value="subject" @if(isset($searchType) && $searchType == 'subject') selected @endif>Theo
                                 Chủ đề</option>
+                            <option value="isbn" @if(isset($searchType) && $searchType == 'isbn') selected @endif>Theo
+                                ISBN</option>
                             <option value="publication_date" @if(isset($searchType) && $searchType == 'publication_date')
                             selected @endif>Theo Ngày XB</option>
                         </select>
@@ -88,8 +88,8 @@
                                         <h4 style="color: var(--primary); font-weight: 700; margin-bottom: 8px;">{{ $book->title }}
                                         </h4>
                                         <p class="text-muted mb-3" style="font-size: 0.9rem;">
-                                            <i class="fas fa-user"></i> Tác giả: {{ $book->author->name ?? 'N/A' }} |
-                                            <i class="fas fa-barcode"></i> ISBN: {{ $book->isbn }}
+                                            <i class="fas fa-barcode"></i> ISBN: {{ $book->isbn }} |
+                                            <i class="fas fa-tag"></i> Chủ đề: {{ $book->subject }}
                                         </p>
 
                                         @foreach ($book->items as $item)
@@ -214,8 +214,10 @@
                                         <input type="text" name="isbn" class="form-control" placeholder="ISBN" required>
                                     </div>
                                     <div class="col-md-6 mb-2">
-                                        <input type="number" name="author_id" class="form-control" placeholder="ID Tác giả"
-                                            required>
+                                        <input type="text" name="subject" class="form-control" placeholder="Chủ đề" required>
+                                    </div>
+                                    <div class="col-md-6 mb-2">
+                                        <input type="date" name="publication_date" class="form-control" required>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <input type="number" name="num_copies" class="form-control"

@@ -20,9 +20,8 @@ class DataController extends Controller
     // CRUD Sách: Tạo Sách Mới (Add book INCLUDE Add book item)
     public function createBook(Request $request)
     {
-        // Giả sử Validation đã được thêm vào Form Request hoặc trong Controller
         try {
-            $book = Book::create($request->only('isbn', 'title', 'subject', 'publication_date', 'author_id'));
+            $book = Book::create($request->only('isbn', 'title', 'subject', 'publication_date'));
             for ($i = 0; $i < $request->num_copies; $i++) {
                 BookItem::create([
                     'book_id' => $book->id,

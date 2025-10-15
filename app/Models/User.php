@@ -94,7 +94,7 @@ class User extends Authenticatable
     {
         return $this->lendings()
             ->whereNull('return_date')
-            ->with(['bookItem.book.author', 'bookItem.rack'])
+            ->with(['bookItem.book', 'bookItem.rack'])
             ->orderBy('due_date', 'asc')
             ->get();
     }
@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function getLendingHistory()
     {
         return $this->lendings()
-            ->with(['bookItem.book.author'])
+            ->with(['bookItem.book'])
             ->orderBy('borrowed_date', 'desc')
             ->get();
     }
@@ -111,7 +111,7 @@ class User extends Authenticatable
     {
         return $this->reservations()
             ->whereIn('status', ['WAITING', 'PROCESSING'])
-            ->with(['bookItem.book.author'])
+            ->with(['bookItem.book'])
             ->orderBy('reservation_date', 'desc')
             ->get();
     }

@@ -22,7 +22,7 @@
                         <option value="">-- Chọn sách --</option>
                         @foreach($books as $book)
                         <option value="{{ $book->id }}" {{ old('book_id') == $book->id ? 'selected' : '' }}>
-                            {{ $book->title }} ({{ $book->author->name ?? 'N/A' }})
+                            {{ $book->title }} (ISBN: {{ $book->isbn }})
                         </option>
                         @endforeach
                     </select>

@@ -134,7 +134,7 @@
                                     <tr>
                                         <td>
                                             <strong>{{ $lending->bookItem->book->title }}</strong><br>
-                                            <small class="text-muted">{{ $lending->bookItem->book->author->name }}</small>
+                                            <small class="text-muted">ISBN: {{ $lending->bookItem->book->isbn }}</small>
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($lending->borrowed_date)->format('d/m/Y') }}</td>
                                         <td>

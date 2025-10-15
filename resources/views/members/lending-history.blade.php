@@ -53,7 +53,6 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Tên sách</th>
-                                        <th>Tác giả</th>
                                         <th>Ngày mượn</th>
                                         <th>Hạn trả</th>
                                         <th>Ngày trả</th>
@@ -68,7 +67,6 @@
                                             <strong>{{ $lending->bookItem->book->title }}</strong><br>
                                             <small class="text-muted">ISBN: {{ $lending->bookItem->book->isbn }}</small>
                                         </td>
-                                        <td>{{ $lending->bookItem->book->author->name }}</td>
                                         <td>{{ \Carbon\Carbon::parse($lending->borrowed_date)->format('d/m/Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($lending->due_date)->format('d/m/Y') }}</td>
                                         <td>
@@ -174,7 +172,7 @@
                                     <div style="flex: 1;">
                                         <h6 class="mb-1" style="font-weight: 600;">{{ $reservation->bookItem->book->title }}</h6>
                                         <small class="text-muted">
-                                            <i class="fas fa-user"></i> {{ $reservation->bookItem->book->author->name }}
+                                            <i class="fas fa-barcode"></i> ISBN: {{ $reservation->bookItem->book->isbn }}
                                         </small>
                                     </div>
                                     <span class="badge 
