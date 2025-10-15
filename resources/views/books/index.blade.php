@@ -23,12 +23,27 @@
                     </div>
                 @endif
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <form action="{{ route('books.index') }}" method="GET" class="d-flex">
-                            <input type="text" name="search" class="form-control me-2" placeholder="Tìm kiếm sách..."
-                                value="{{ request('search') }}">
-                            <button type="submit" class="btn btn-outline-secondary">Tìm kiếm</button>
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Tìm kiếm theo tên sách, ISBN, hoặc chủ đề..."
+                                       value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Tìm kiếm
+                                </button>
+                                @if(request('search'))
+                                    <a href="{{ route('books.index') }}" class="btn btn-secondary">
+                                        <i class="fas fa-times"></i> Xóa
+                                    </a>
+                                @endif
+                            </div>
                         </form>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="text-muted">
+                            Tìm thấy <strong>{{ $books->total() }}</strong> kết quả
+                        </span>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -77,12 +92,32 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">Không có sách nào trong thư viện.</td>
+                                    <td colspan="6" class="text-center">
+                                        @if(request('search'))
+                                            <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                                            <p>Không tìm thấy sách nào với từ khóa "<strong>{{ request('search') }}</strong>"</p>
+                                            <a href="{{ route('books.index') }}" class="btn btn-primary btn-sm">Xem tất cả sách</a>
+                                        @else
+                                            Không có sách nào trong thư viện.
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+                
+                @if($books->hasPages())
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div>
+                            Hiển thị <strong>{{ $books->firstItem() }}</strong> đến <strong>{{ $books->lastItem() }}</strong> 
+                            trong tổng số <strong>{{ $books->total() }}</strong> kết quả
+                        </div>
+                        <div>
+                            {{ $books->appends(request()->query())->links() }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
