@@ -93,23 +93,22 @@ Dự án sử dụng các bảng chính sau:
 
 ## Phân Chia Công Việc
 
-### akitosuref
--   Cập nhật README với phân chia công việc (commit: a33d913)
--   Tìm kiếm và phân trang sách (commit: 990724b)
--   Hệ thống ảnh bìa sách, sửa Model Member, cải thiện đăng ký và UX xác thực (commit: 6afff40)
--   Xóa module Authors và cập nhật module Books theo schema cơ sở dữ liệu (commit: 9eb9d9e)
--   Xóa tham chiếu Author từ migrations và seeders (commit: b00c586)
--   Tạo thêm posts (commit: 2ca54e4)
--   Merge remote và local README (commit: a613a93)
--   Initial commit (commit: 0a8e5db)
--   Cập nhật UserSeeder roles, xóa thông báo từ dashboard, làm sạch README (commit: 8f3b84b)
--   Cấu hình khởi tạo Laravel (commit: 5911024)
--   First commit (commit: 4a2b2ee)
+### akitosuref (Vương Quang Quý)
+-   Khởi tạo và cấu hình dự án Laravel
+-   Thiết kế và triển khai cơ sở dữ liệu
+-   Xây dựng hệ thống xác thực và phân quyền (Librarian/Member)
+-   Phát triển module quản lý thành viên
+-   Phát triển module quản lý phiếu mượn sách
+-   Xây dựng tính năng mạng xã hội (Posts, Comments, Likes, Shares)
+-   Quản lý repository và Git operations
 
 ### banhgatongonngon
--   Hỗ trợ code và tư vấn kỹ thuật
--   Review và debug code
--   Hỗ trợ git operations và quản lý repository
+-   Phát triển module quản lý sách (CRUD)
+-   Xây dựng tính năng tìm kiếm và phân trang sách
+-   Phát triển hệ thống upload và hiển thị ảnh bìa sách
+-   Cải thiện giao diện đăng ký và UX xác thực
+-   Tối ưu hóa cấu trúc database và models
+-   Hỗ trợ code review và debug
 
 ## Các Tuyến đường (Routes) chính
 
