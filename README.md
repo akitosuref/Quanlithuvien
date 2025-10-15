@@ -106,6 +106,11 @@ Dự án sử dụng các bảng chính sau:
 -   Cấu hình khởi tạo Laravel (commit: 5911024)
 -   First commit (commit: 4a2b2ee)
 
+### banhgatongonngon
+-   Hỗ trợ code và tư vấn kỹ thuật
+-   Review và debug code
+-   Hỗ trợ git operations và quản lý repository
+
 ## Các Tuyến đường (Routes) chính
 
 -   `GET /`: Dashboard
