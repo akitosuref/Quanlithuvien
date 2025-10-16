@@ -16,15 +16,21 @@ Route::get('/home', function () {
     return redirect()->route('dashboard');
 })->name('home');
 
+// DEBUG ROUTE - Remove after testing
+Route::get('/debug-auth', function () {
+    $user = auth()->user();
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user' => $user,
+        'is_librarian' => $user ? $user->isLibrarian() : false,
+    ]);
+})->middleware('auth');
+
 Route::middleware('auth')->group(function () {
     Route::get('/', [LibraryController::class, 'dashboard'])->name('dashboard');
 
     // Chức năng Chung
     Route::get('/search', [LibraryController::class, 'searchCatalog'])->name('catalog.search');
-
-    // Books/Members Resource Routes (view only for members)
-    Route::resource('books', BookController::class)->only(['index', 'show']);
-    Route::resource('members', MemberController::class)->only(['index', 'show']);
 
     // Posts/Social Features
     Route::resource('posts', PostController::class);
@@ -51,8 +57,14 @@ Route::middleware('auth')->group(function () {
             Route::post('/members/{user}/cancel', [DataController::class, 'cancelMembership'])->name('members.cancel');
         });
 
-        Route::resource('books', BookController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
-        Route::resource('members', MemberController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
+        Route::resource('books', BookController::class)->except(['index', 'show']);
+        Route::resource('members', MemberController::class)->except(['index', 'show']);
         Route::resource('phieumuon', PhieuMuonController::class);
     });
+
+    // Books/Members Resource Routes (view only for members) - Must be AFTER librarian routes
+    Route::get('/books', [BookController::class, 'index'])->name('books.index');
+    Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
+    Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+    Route::get('/members/{member}', [MemberController::class, 'show'])->name('members.show');
 });
