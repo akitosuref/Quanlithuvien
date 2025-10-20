@@ -35,13 +35,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($members as $member)
+                            @forelse ($members as $index => $member)
                                 <tr>
-                                    <td>{{ $member->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $member->name }}</td>
                                     <td>{{ $member->email }}</td>
                                     <td>{{ $member->phone }}</td>
-                                    <td>{{ $member->address }}</td>
+                                    <td>
+                                        @if($member->address)
+                                            {{ $member->address->street }}, {{ $member->address->city }}
+                                        @else
+                                            <span class="text-muted">Chưa cập nhật</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <a href="{{ route('members.show', $member->id) }}" class="btn btn-info btn-sm me-1"
                                             title="Xem"><i class="fas fa-eye"></i></a>

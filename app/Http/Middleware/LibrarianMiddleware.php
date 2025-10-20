@@ -15,7 +15,7 @@ class LibrarianMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isLibrarian()) {
+        if (!auth()->check() || !auth()->user()->hasRole('librarian')) {
             return redirect()->route('dashboard')->with('error', 'Bạn không có quyền truy cập. Chỉ thủ thư mới được phép.');
         }
 

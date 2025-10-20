@@ -7,6 +7,11 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PhieuMuonController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\LibraryEventController;
+use App\Http\Controllers\EventRequestController;
+use App\Http\Controllers\EventResponseController;
+use App\Http\Controllers\MemberEventController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -38,6 +43,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post}/share', [PostController::class, 'share'])->name('posts.share');
     Route::post('/posts/{post}/comment', [PostController::class, 'comment'])->name('posts.comment');
 
+    // Member Event Features
+    Route::get('/library-events', [MemberEventController::class, 'index'])->name('member-events.index');
+    Route::get('/library-events/{event}', [MemberEventController::class, 'show'])->name('member-events.show');
+    Route::resource('event-requests', EventRequestController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+    Route::post('/event-responses', [EventResponseController::class, 'store'])->name('event-responses.store');
+    Route::patch('/event-responses/{eventResponse}', [EventResponseController::class, 'update'])->name('event-responses.update');
+    Route::delete('/event-responses/{eventResponse}', [EventResponseController::class, 'destroy'])->name('event-responses.destroy');
+
     // Chức năng Thành viên (Member)
     Route::post('/books/{bookItem}/reserve', [LibraryController::class, 'reserveBook'])->name('member.reserve');
     Route::post('/lendings/{lending}/renew', [LibraryController::class, 'renewBook'])->name('member.renew');
@@ -49,7 +62,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/books/issue', [LibraryController::class, 'issueBook'])->name('librarian.issue');
         Route::post('/lendings/return', [LibraryController::class, 'returnBook'])->name('librarian.return');
 
-        // Chức năng Thủ thư (Librarian) - CRUD Dữ liệu
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
+        Route::get('/activity-logs/{activity}', [ActivityLogController::class, 'show'])->name('activity-logs.show');
+
+        Route::resource('events', LibraryEventController::class);
+        Route::get('/event-requests/{eventRequest}/review', [EventRequestController::class, 'review'])->name('event-requests.review');
+        Route::patch('/event-requests/{eventRequest}/review', [EventRequestController::class, 'updateReview'])->name('event-requests.update-review');
+
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/books', [DataController::class, 'createBook'])->name('books.create');
             Route::delete('/books/{book}', [DataController::class, 'deleteBook'])->name('books.delete');

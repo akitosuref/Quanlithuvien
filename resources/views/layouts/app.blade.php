@@ -40,6 +40,22 @@
                     <li>
                         <a href="{{ route('members.index') }}"><i class="fas fa-users"></i> Quản Lý Độc Giả</a>
                     </li>
+                    <li>
+                        <a href="{{ route('events.index') }}"><i class="fas fa-calendar-alt"></i> Quản Lý Sự Kiện</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('event-requests.index') }}"><i class="fas fa-clipboard-list"></i> Yêu Cầu Sự Kiện</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('activity-logs.index') }}"><i class="fas fa-history"></i> Lịch sử Hoạt động</a>
+                    </li>
+                    @else
+                    <li>
+                        <a href="{{ route('member-events.index') }}"><i class="fas fa-calendar-alt"></i> Sự Kiện Thư Viện</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('event-requests.index') }}"><i class="fas fa-clipboard-list"></i> Yêu Cầu Của Tôi</a>
+                    </li>
                     @endif
                     <li>
                         <a href="{{ route('phieumuon.index') }}"><i class="fas fa-ticket-alt"></i> Quản Lý Mượn Trả</a>
