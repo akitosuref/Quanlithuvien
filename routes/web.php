@@ -13,6 +13,7 @@ use App\Http\Controllers\EventRequestController;
 use App\Http\Controllers\EventResponseController;
 use App\Http\Controllers\MemberEventController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\BookItemController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -85,6 +86,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('books', BookController::class)->except(['index', 'show']);
         Route::resource('members', MemberController::class)->except(['index', 'show']);
         Route::resource('phieumuon', PhieuMuonController::class);
+        
+        Route::post('/book-items', [BookItemController::class, 'store'])->name('book-items.store');
+        Route::put('/book-items/{bookItem}', [BookItemController::class, 'update'])->name('book-items.update');
+        Route::delete('/book-items/{bookItem}', [BookItemController::class, 'destroy'])->name('book-items.destroy');
         
         Route::patch('/phieumuon/{returnRequest}/approve-return', [PhieuMuonController::class, 'approveReturn'])->name('phieumuon.return.approve');
         Route::patch('/phieumuon/{returnRequest}/reject-return', [PhieuMuonController::class, 'rejectReturn'])->name('phieumuon.return.reject');

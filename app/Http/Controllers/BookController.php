@@ -32,7 +32,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $racks = \App\Models\Rack::orderBy('rack_number')->get();
+        return view('books.create', compact('racks'));
     }
 
     /**
@@ -46,9 +47,11 @@ class BookController extends Controller
             'subject' => 'nullable|string|max:255',
             'publication_date' => 'nullable|date',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'quantity' => 'required|integer|min:1|max:100',
+            'rack_id' => 'required|exists:racks,id',
         ]);
 
-        $data = $request->all();
+        $data = $request->only(['isbn', 'title', 'subject', 'publication_date']);
 
         if ($request->hasFile('cover_image')) {
             $image = $request->file('cover_image');
@@ -57,10 +60,20 @@ class BookController extends Controller
             $data['cover_image'] = 'images/books/' . $imageName;
         }
 
-        Book::create($data);
+        $book = Book::create($data);
+
+        for ($i = 1; $i <= $request->quantity; $i++) {
+            \App\Models\BookItem::create([
+                'book_id' => $book->id,
+                'rack_id' => $request->rack_id,
+                'barcode' => $book->isbn . '-' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'format' => 'HARDCOVER',
+                'status' => 'AVAILABLE',
+            ]);
+        }
 
         return redirect()->route('books.index')
-            ->with('success', 'Sách đã được thêm thành công.');
+            ->with('success', 'Sách đã được thêm thành công với ' . $request->quantity . ' bản sao.');
     }
 
     /**
@@ -77,7 +90,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $book->load('bookItems.rack');
+        $racks = \App\Models\Rack::orderBy('rack_number')->get();
+        return view('books.edit', compact('book', 'racks'));
     }
 
     /**
