@@ -107,7 +107,7 @@ Dự án sử dụng các bảng chính sau:
 -   Thêm middleware bảo vệ routes cho Librarian
 -   Quản lý repository và Git operations
 
-### banhgatongonngon
+### banhgatongonngon (Nguyễn Thanh Nam)
 -   Phát triển module quản lý sách (CRUD)
 -   Xây dựng tính năng tìm kiếm và phân trang sách
 -   Phát triển hệ thống upload và hiển thị ảnh bìa sách
