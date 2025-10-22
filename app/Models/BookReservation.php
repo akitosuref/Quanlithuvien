@@ -16,6 +16,10 @@ class BookReservation extends Model
         'status',
     ];
 
+    protected $casts = [
+        'reservation_date' => 'date',
+    ];
+
     public function member()
     {
         return $this->belongsTo(User::class, 'member_id');

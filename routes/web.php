@@ -12,6 +12,7 @@ use App\Http\Controllers\LibraryEventController;
 use App\Http\Controllers\EventRequestController;
 use App\Http\Controllers\EventResponseController;
 use App\Http\Controllers\MemberEventController;
+use App\Http\Controllers\RequestController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
@@ -51,6 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/event-responses/{eventResponse}', [EventResponseController::class, 'update'])->name('event-responses.update');
     Route::delete('/event-responses/{eventResponse}', [EventResponseController::class, 'destroy'])->name('event-responses.destroy');
 
+    // Member Requests
+    Route::get('/requests', [RequestController::class, 'index'])->name('requests.index');
+    Route::post('/requests/return', [RequestController::class, 'storeReturnRequest'])->name('requests.return.store');
+    Route::post('/requests/borrow', [RequestController::class, 'storeBorrowRequest'])->name('requests.borrow.store');
+
     // Chức năng Thành viên (Member)
     Route::post('/books/{bookItem}/reserve', [LibraryController::class, 'reserveBook'])->name('member.reserve');
     Route::post('/lendings/{lending}/renew', [LibraryController::class, 'renewBook'])->name('member.renew');
@@ -79,6 +85,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('books', BookController::class)->except(['index', 'show']);
         Route::resource('members', MemberController::class)->except(['index', 'show']);
         Route::resource('phieumuon', PhieuMuonController::class);
+        
+        Route::patch('/phieumuon/{returnRequest}/approve-return', [PhieuMuonController::class, 'approveReturn'])->name('phieumuon.return.approve');
+        Route::patch('/phieumuon/{returnRequest}/reject-return', [PhieuMuonController::class, 'rejectReturn'])->name('phieumuon.return.reject');
+        Route::patch('/phieumuon/{returnRequest}/complete-return', [PhieuMuonController::class, 'completeReturn'])->name('phieumuon.return.complete');
     });
 
     // Books/Members Resource Routes (view only for members) - Must be AFTER librarian routes

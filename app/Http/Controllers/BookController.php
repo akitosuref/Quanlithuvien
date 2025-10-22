@@ -12,7 +12,7 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Book::query();
+        $query = Book::with('bookItems');
 
         if ($request->has('search') && $request->search != '') {
             $search = $request->search;
@@ -68,6 +68,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
+        $book->load('bookItems.rack');
         return view('books.show', compact('book'));
     }
 

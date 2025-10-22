@@ -6,6 +6,7 @@ use App\Models\PhieuMuon;
 use App\Models\Book;
 use App\Models\BookItem;
 use App\Models\User;
+use App\Models\ReturnRequest;
 use Illuminate\Http\Request;
 
 class PhieuMuonController extends Controller
@@ -16,7 +17,10 @@ class PhieuMuonController extends Controller
     public function index()
     {
         $phieumuons = PhieuMuon::with(['bookItem.book', 'member'])->get();
-        return view('phieumuon.index', compact('phieumuons'));
+        $returnRequests = ReturnRequest::with(['lending.bookItem.book', 'lending.member'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('phieumuon.index', compact('phieumuons', 'returnRequests'));
     }
 
     /**
@@ -112,5 +116,71 @@ class PhieuMuonController extends Controller
 
         return redirect()->route('phieumuon.index')
             ->with('success', 'Phiếu mượn đã được xóa thành công.');
+    }
+
+    public function approveReturn(ReturnRequest $returnRequest)
+    {
+        if ($returnRequest->status !== 'pending') {
+            return redirect()->back()->with('error', 'Yêu cầu này đã được xử lý.');
+        }
+
+        $returnRequest->update([
+            'status' => 'approved',
+            'processed_by' => auth()->id(),
+            'processed_at' => now(),
+        ]);
+
+        return redirect()->route('phieumuon.index')
+            ->with('success', 'Đã duyệt yêu cầu trả sách. Vui lòng xử lý việc trả sách.');
+    }
+
+    public function rejectReturn(Request $request, ReturnRequest $returnRequest)
+    {
+        if ($returnRequest->status !== 'pending') {
+            return redirect()->back()->with('error', 'Yêu cầu này đã được xử lý.');
+        }
+
+        $request->validate([
+            'librarian_notes' => 'required|string|max:500',
+        ]);
+
+        $returnRequest->update([
+            'status' => 'rejected',
+            'librarian_notes' => $request->librarian_notes,
+            'processed_by' => auth()->id(),
+            'processed_at' => now(),
+        ]);
+
+        return redirect()->route('phieumuon.index')
+            ->with('success', 'Đã từ chối yêu cầu trả sách.');
+    }
+
+    public function completeReturn(Request $request, ReturnRequest $returnRequest)
+    {
+        if (!in_array($returnRequest->status, ['pending', 'approved'])) {
+            return redirect()->back()->with('error', 'Không thể hoàn thành yêu cầu này.');
+        }
+
+        $lending = $returnRequest->lending;
+
+        if ($lending->return_date) {
+            return redirect()->back()->with('error', 'Sách này đã được trả rồi.');
+        }
+
+        $lending->update([
+            'return_date' => now(),
+        ]);
+
+        $lending->bookItem->update(['status' => 'AVAILABLE']);
+
+        $returnRequest->update([
+            'status' => 'completed',
+            'librarian_notes' => $request->librarian_notes ?? 'Đã trả sách thành công',
+            'processed_by' => auth()->id(),
+            'processed_at' => now(),
+        ]);
+
+        return redirect()->route('phieumuon.index')
+            ->with('success', 'Đã xử lý trả sách thành công.');
     }
 }

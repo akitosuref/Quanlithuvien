@@ -33,9 +33,15 @@
                     <li>
                         <a href="{{ route('home') }}"><i class="fas fa-home"></i> Trang Chủ</a>
                     </li>
+                    @if(auth()->user()->role === 'librarian')
                     <li>
                         <a href="{{ route('books.index') }}"><i class="fas fa-book"></i> Quản Lý Sách</a>
                     </li>
+                    @else
+                    <li>
+                        <a href="{{ route('books.index') }}"><i class="fas fa-book-reader"></i> Thư Viện Sách</a>
+                    </li>
+                    @endif
                     @if(auth()->user()->role === 'librarian')
                     <li>
                         <a href="{{ route('members.index') }}"><i class="fas fa-users"></i> Quản Lý Độc Giả</a>
@@ -49,17 +55,17 @@
                     <li>
                         <a href="{{ route('activity-logs.index') }}"><i class="fas fa-history"></i> Lịch sử Hoạt động</a>
                     </li>
+                    <li>
+                        <a href="{{ route('phieumuon.index') }}"><i class="fas fa-ticket-alt"></i> Quản Lý Mượn Trả</a>
+                    </li>
                     @else
                     <li>
                         <a href="{{ route('member-events.index') }}"><i class="fas fa-calendar-alt"></i> Sự Kiện Thư Viện</a>
                     </li>
                     <li>
-                        <a href="{{ route('event-requests.index') }}"><i class="fas fa-clipboard-list"></i> Yêu Cầu Của Tôi</a>
+                        <a href="{{ route('requests.index') }}"><i class="fas fa-tasks"></i> Yêu Cầu Của Tôi</a>
                     </li>
                     @endif
-                    <li>
-                        <a href="{{ route('phieumuon.index') }}"><i class="fas fa-ticket-alt"></i> Quản Lý Mượn Trả</a>
-                    </li>
                     <li>
                         <a href="{{ route('posts.index') }}"><i class="fas fa-newspaper"></i> Cảm nhận Sách</a>
                     </li>
